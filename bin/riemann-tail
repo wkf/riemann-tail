@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'thor'
+require 'riemann/tail'
+
+Signal.trap 'SIGINT' do
+  puts "interrupted..."
+  Process.exit 1
+end
+
+class Riemann::Tail::CLI < Thor::Group
+  namespace ""
+  desc "Subscribe to (tail) a riemann event stream based on QUERY"
+  argument :query
+  class_option :host, :aliases => :h, :default => "localhost", :desc => "Riemann host"
+  class_option :port, :aliases => :p, :default => "5556", :desc => "Riemann port number"
+  class_option :config, :aliases => :c, :default => "riemann-tail-config.rb", :desc => "Path to config file"
+  class_option :from_file, :aliases => :f, :type => :boolean, :desc => "Read query from file instead of command"
+  def tail
+    require File.expand_path(options["config"])
+
+    Riemann::Tail.run_query(options["from_file"] ? File.read(query) : query, options)
+  end
+end
+
+Riemann::Tail::CLI.start(ARGV)
