@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["will@mojotech.com"]
   spec.summary       = %q{Subscribe (tail) Riemann event streams from the console}
   spec.description   = spec.summary
-  spec.homepage      = "github.com/wkf/riemann-tail"
+  spec.homepage      = "https://github.com/wkf/riemann-tail"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
